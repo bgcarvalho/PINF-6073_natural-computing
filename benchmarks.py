@@ -6,6 +6,9 @@ https://gist.github.com/denis-bz/da697d8bc74fae4598bf
 Some functions from:
 https://en.wikipedia.org/wiki/Test_functions_for_optimization
 
+Reference:
+[1] https://www.sfu.ca/~ssurjano/optimization.html
+
 """
 import numpy as np
 
@@ -39,6 +42,10 @@ def rastrigin_function(x):
 
 def sphere_function(x):
     """
+    MIN at f(0, ..., 0) = 0
+
+    Ref.:
+    [1] = https://www.sfu.ca/~ssurjano/spheref.html
 
     :param x:
     :return:
@@ -48,8 +55,11 @@ def sphere_function(x):
 
 def rosenbrock_function(x):
     """
+    MIN at f(1.0, ..., 1.0) = 0
+
     As seen in:
-    http://en.wikipedia.org/wiki/Rosenbrock_function
+    [1] https://www.sfu.ca/~ssurjano/rosen.html
+    [2] http://en.wikipedia.org/wiki/Rosenbrock_function
     """
     x0 = x[:-1]
     x1 = x[1:]
@@ -228,11 +238,39 @@ def schaffer_function_4(x):
 
 def styblinski_tang_function(x):
     """
-    MIN f(-2.903534, ... -2.903534) > -39.16617 * N
+    MIN f(-2.903534, ... -2.903534) = -39.16599 * N
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/stybtang.html
+
     :param x:
     :return:
     """
     return 0.5 * np.sum(x ** 4 - 16 * x ** 2 + 5 * x)
+
+
+def dixon_price_function(x):
+    """
+    MIN f = 0
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/dixonpr.html
+    """
+    d = x.shape[0]
+    i = np.arange(2.0, d + 1.0)
+    sq = (2 * x[2:] ** 2 - x[1:-1]) ** 2
+    return (x[0] - 1) ** 2 + np.sum(i * sq)
+
+
+def michalewicz_function(x):
+    """
+    MIN f is ??? at ???
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/michal.html
+    """
+    i = np.arrange(1.0, len(x) + 1)
+    return -np.sum(np.sin(x) * (np.sinh((i * x ** 2) / np.pi) ** ( 2 * 10)))
 
 
 def nesterov(x):
@@ -240,7 +278,6 @@ def nesterov(x):
     Nesterov's nonsmooth Chebyshev-Rosenbrock function,
     Overton 2011 variant 2
     """
-    x = np.asarray_chkfinite(x)
     x0 = x[:-1]
     x1 = x[1:]
     return (
@@ -250,14 +287,25 @@ def nesterov(x):
 
 
 def saddle(x):
-    x = np.asarray_chkfinite(x) - 1
+    """
+    MIN ???
+
+    Ref.:
+    [1] https://gist.github.com/denis-bz/da697d8bc74fae4598bf
+    """
     return (
-        np.mean( np.diff( x ** 2 ))
-        + .5 * np.mean( x ** 4 )
+        np.mean(np.diff( x ** 2 ))
+        + 0.5 * np.mean( x ** 4 )
     )
 
 
 def zakharov(x):
+    """
+    MIN f(x) = ZERO at x=(0,..., 0)
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/zakharov.html
+    """
     n = x.shape[0]
     j = np.arange(1.0, n + 1.0)
     s2 = np.sum(j * x ) / 2.0
@@ -265,24 +313,45 @@ def zakharov(x):
 
 
 def trid( x ):
-    x = np.asarray_chkfinite(x)
+    """
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/trid.html
+    """
     return np.sum((x - 1) ** 2) - np.sum(x[:-1] * x[1:])
 
 
 def sum2( x ):
-    x = np.asarray_chkfinite(x)
+    """
+    MIN f(x) = ZERO at x=(0,..., 0)
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/sumsqu.html
+    """
     n = len(x)
     j = np.arange(1.0, n + 1)
     return np.sum(j * x ** 2)
 
 
 def schwefel(x):
+    """
+    MIN f(x) = ZERO at x=(420.9687, ..., 420.9687)
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/schwef.html
+    """
     x = np.asarray_chkfinite(x)
     n = len(x)
     return 418.9829 * n - np.sum(x * np.sin(np.sqrt(np.fabs(x))))
 
 
 def powell(x):
+    """
+    MIN f(x) = ZERO at x=(0,..., 0)
+
+    Ref.:
+    [1] https://www.sfu.ca/~ssurjano/powell.html
+    """
     x = np.asarray_chkfinite(x)
     n = len(x)
     n4 = ((n + 3) // 4) * 4
